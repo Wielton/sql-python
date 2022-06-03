@@ -1,26 +1,35 @@
-import dbcreds
-import mariadb
+from db_helpers import *
 
-#connect to mariadb
-conn = mariadb.connect(
-                        user=dbcreds.user,
-                        password=dbcreds.password,
-                        host=dbcreds.host,
-                        port=dbcreds.port,
-                        database=dbcreds.database,
-                        )
-# now use the db to create a cursor object.  a cursor is a function to 
-user = input("Please enter your username: ")
-print("You have two options:")
-print("1. Write a new post")
-print("2. See all other posts")
-selection = input("Choose 1 or 2: ")
+user = input(str("Please enter your name: "))
+todo = input(str("Hello {} please select 1 to post, or 2 to see all posts: "))
 
-if selection == "1":
-    content = input("Write your post:")
-    cursor = conn.cursor()
-    cursor.execute()
-    conn.commit()
-#once your commit is complete, close the connection and treat it like an opening and closing block of code
-    cursor.close()
-    conn.close()
+if todo == "1":
+    post = input(str("Begin: "))
+    run_query("INSERT INTO blog_post(username,content) VALUES (?,?)", [user,post])
+    
+elif todo == "2":
+    run_query("SELECT * FROM blog_post")
+
+
+# THIS WILL ALLOW TO SIGN UP OR LOGIN
+# selection = input("Welcome to Blog! Please choose an option: 1. Signup or 2. Login ")
+
+# if selection == "1":
+#     user_email = input(str("Email: "))
+#     user_username = input(str("Username: "))
+#     user_password = input(str("Password: "))
+#     user_first_name = input(str("First Name: "))
+#     user_last_name = input(str("Last Name: "))
+#     run_query("INSERT INTO users(username,email,first_name,last_name,password) VALUES (?,?,?,?,?)", [user_username,user_email,user_first_name,user_last_name,user_password])
+    
+# elif selection == "2":
+#     user_username = input(str("Username: "))
+#     user_password = input(str("Password: "))
+#     run_query("SELECT username FROM users ")
+# else:
+#     print("Retry")
+#     input()
+    
+    
+
+    
