@@ -1,3 +1,4 @@
+from sre_parse import State
 from dbcreds import *
 import mariadb
 
@@ -23,15 +24,46 @@ def disconnect_db(conn,cursor):
         conn.rollback()
         conn.close()
 
+# The run_query() closes the connection once it retrieves the info so I thought if I create a login_query()
+# I could bypass it but I couldn't get the authentication down.  
+# I have a sneaky suspicion that having run_query() in a while loop would alleviate this,
+# but I didn't explore that yet as I've been trying to formulate the credential check
+# def login_query(statement):
+#     try:
+#         (conn,cursor) = connect_db()
+#         cursor.execute(statement)
+#         user = cursor.fetchall()
+#         print(user)
+#         return user
+#     except Exception:
+#         print    
+        
+            
+    
+        
+    
+    # for user in users:
+    #     if username == user:
+    #         print(user)
+    #         password = input(str("Password: "))
+    #         for password in users:
+    #             if password == users:
+    #                 print("You have successfully logged in.")
+    #             else:
+    #                 print("Your credentials don't match.")
+    #         else:
+    #             print("No username found.  Please try again:")
+    #             input()
+    
 def run_query(statement, args=None):
     try:
         (conn, cursor) = connect_db()
         if statement.startswith("SELECT"):
             cursor.execute(statement,args)
-            result = cursor.fetchall()
-            print(result)
+            results = cursor.fetchall()
+            print(results)
             # print("Total of {} users".format(cursor.rowcount))
-            # return result
+            return results
             # Get the first person from the results list, then retrieve the 2nd index(column) from that row
             # print(result[0][1])
         elif statement.startswith("INSERT"):
